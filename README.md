@@ -2,20 +2,33 @@
 
 ## Consideraciones para el reto
 
-Este repositorio corresponse a persona y cliente donde se trabajaron las funcionalidades F1 y F5 del repo. 
+Este repositorio corresponse a persona y cliente donde se trabajaron las funcionalidades F1, F2, F3 y F4  del reto. 
 
 Se siguieron las reglas de negocio que estaban en la guía de ejecución del ejercicio. Además se tomaron en cuenta las siguientes consideraciones para la realización de los servicios  
+### Consideraciones extras F1
+### - Crud Cuenta
 
+- Las cuentas tienen un cliente asociado.
+- Para crear una cuenta:
+  - Se debe validar existencia del cliente. Solo se puede crear una cuenta cuando una persona ya tenga un cliente.
+  - Se crea únicamente con el tipo y el saldo.
+  - Un cliente puede tener más de 1 cuenta.
+- Para editar una cuenta:
+  - Se edita el estado.
+- Para eliminar una cuenta:
+  - Se puede eliminar una cuenta solo si ya se eliminaron los movimientos asociados.
+- Consultar todas la cuentas del cliente y la info de una cuenta específica con el Id.
+### - Crud Movimientos
 
-### Crud cliente
+- Los movimientos tienen una cuenta asociada.
+- Consultar movimientos con el Id.
+- Los movimientos no se pueden editar ni eliminar.
 
-- Dado que no se tiene un CRUD para persona, se considera esta como una fuente de validaciones. Es decir, para crear un cliente debe estar registrado en persona. Similar a una aplicación bancaria que consulta de una api externa la información de importante de sus clientes.
-- Para crear un cliente:
-    - Se crea con número de documento de persona y contraseña, dado que el resto de datos se validan de persona.
-- Para editar un cliente:
-    - Dado que no se pueden editar personas,  solo se puede editar la contraseña y el estado del cliente
+### Consideraciones extras F2
 
-
+- Para crear un movimiento se debe:
+  - Solo se puede crear con la cuenta y el valor
+  - Actualizar el saldo en la tabla cuenta
 
 ## Antes de Iniciar
 
