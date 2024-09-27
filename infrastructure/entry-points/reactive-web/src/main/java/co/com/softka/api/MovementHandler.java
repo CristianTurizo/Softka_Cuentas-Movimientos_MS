@@ -1,4 +1,4 @@
-package co.com.softka.api.movements;
+package co.com.softka.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

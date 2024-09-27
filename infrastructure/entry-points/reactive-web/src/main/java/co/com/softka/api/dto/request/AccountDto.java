@@ -12,5 +12,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class AccountDto {
+    private Integer accountNumber;
+    private String tipoCuenta;
+    private Integer balance;
+    private Boolean estado;
+    private Integer idCliente;
 
 }

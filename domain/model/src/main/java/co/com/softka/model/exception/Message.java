@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Message {
 
-    ACCOUNT_NOT_FOUND("Persona no encontrada"),
-    CLIENT_NOT_FOUND("Cliente no encontrado"),
+    ACCOUNT_NOT_FOUND("Cuenta no encontrada"),
+    CLIENT_NOT_FOUND("Cliente no existe"),
 
     SAVE_ACCOUNT_ERROR("Error saving account"),
     FIND_ACCOUNT_ERROR("Error finding account"),
