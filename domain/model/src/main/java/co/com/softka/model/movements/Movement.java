@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,7 +16,7 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class Movement {
     private Integer idMovement;
-    private String date;
+    private LocalDate date;
     private String type;
     private Integer amount;
     private Integer accountBalance;

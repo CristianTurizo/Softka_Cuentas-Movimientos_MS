@@ -45,6 +45,20 @@ public class MovementHandler {
                 .onErrorResume(error -> this.buildResponse(null, Message.FIND_MOVEMENT_ERROR, error.getMessage()));
     }
 
+
+    public Mono<ServerResponse> getReport(ServerRequest serverRequest) {
+        String idCliente = serverRequest.queryParam("idCliente").get();
+        String initialDate = serverRequest.queryParam("initialDate").get();
+        String finalDate = serverRequest.queryParam("finalDate").get();
+
+        return this.movementUseCase.getReport(idCliente, initialDate, finalDate)
+                .map(this.mapper::toDto)
+                .flatMap(movementDto -> this.buildResponse(movementDto, Message.REPORT_GENERATED_SUCCESSFULLY, null))
+                .doFirst(() -> log.info("Start finding report"))
+                .doOnError(error -> log.error(Message.REPORT_ERROR.getMessage().concat(" with exception: {}"), error.getMessage()))
+                .onErrorResume(error -> this.buildResponse(null, Message.REPORT_ERROR, error.getMessage()));
+    }
+
     private <T> Mono<ServerResponse> buildResponse(T data, Message responseMessage, String error) {
         GenericResponse<T> response = new GenericResponse<>(
                 data,

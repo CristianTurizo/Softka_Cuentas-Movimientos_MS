@@ -20,6 +20,7 @@ public enum Message {
 
     SAVE_MOVEMENT_ERROR("Error al guardar movimiento"),
     FIND_MOVEMENT_ERROR("Error al encontrar movimiento"),
+    REPORT_ERROR("Error generando reporte"),
     DELETE_MOVEMENT_ERROR("Error al eliminar movimiento"),
 
 
@@ -30,6 +31,8 @@ public enum Message {
 
     MOVEMENT_CREATED_SUCCESSFULLY("Movimiento creado con exito"),
     MOVEMENT_FOUND_SUCCESSFULLY("Movimiento encontrado con exito"),
+
+    REPORT_GENERATED_SUCCESSFULLY("Reporte generado con éxito"),
 
     ;
 

@@ -16,6 +16,7 @@ public class RouterRest {
 
     private static final String ACCOUNT_PATH = "/cuentas";
     private static final String MOVEMENT_PATH = "/movimientos";
+    private static final String REPORT_PATH = "/reportes";
 
     @Bean
     public RouterFunction<ServerResponse> routerFunction(AccountHandler accountHandler, MovementHandler movementHandler) {
@@ -24,6 +25,7 @@ public class RouterRest {
                 .andRoute(PUT(ACCOUNT_PATH), accountHandler::updateAccount)
                 .andRoute(DELETE(ACCOUNT_PATH.concat("/{id}")), accountHandler::deleteAccountById)
                 .andRoute(GET(MOVEMENT_PATH.concat("/{id}")), movementHandler::getMovementById)
+                .andRoute(GET(REPORT_PATH), movementHandler::getReport)
                 .andRoute(POST(MOVEMENT_PATH), movementHandler::saveMovement);
     }
 }

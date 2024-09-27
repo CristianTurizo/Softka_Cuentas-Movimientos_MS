@@ -5,13 +5,16 @@ import co.com.softka.model.exception.BussinesException;
 import co.com.softka.model.exception.Message;
 import co.com.softka.model.movements.Movement;
 import co.com.softka.model.movements.gateways.MovementGateway;
+import co.com.softka.model.report.Report;
 import co.com.softka.usecase.account.AccountUseCase;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 import reactor.function.TupleUtils;
 import reactor.util.function.Tuple2;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class MovementUseCase {
@@ -21,17 +24,17 @@ public class MovementUseCase {
     public static final String DEPOSITO = "deposito";
 
     public Mono<Movement> createMovement(Movement movement) {
-        movement.setDate(LocalDateTime.now().toString());
+        movement.setDate(LocalDate.now());
 
         return this.accountUseCase.getAcccountById(movement.getAccountNumber())
                 .switchIfEmpty(Mono.error(new BussinesException(Message.ACCOUNT_NOT_FOUND)))
                 .flatMap(this::validateAccountStatus)
                 .flatMap(account -> this.updateBalance(account, movement))
-                .flatMap(TupleUtils.function(this::saveNewBalaceInfo));
+                .flatMap(TupleUtils.function(this::saveNewBalanceInfo));
     }
 
-    private Mono<Account> validateAccountStatus(Account account){
-        if (account.getEstado().equals(Boolean.FALSE)){
+    private Mono<Account> validateAccountStatus(Account account) {
+        if (account.getEstado().equals(Boolean.FALSE)) {
             return Mono.error(new BussinesException(Message.INVALID_ACCOUNT));
         }
         return Mono.just(account);
@@ -59,15 +62,22 @@ public class MovementUseCase {
         return Mono.zip(Mono.just(account), Mono.just(movement));
     }
 
-    private Mono<Movement> saveNewBalaceInfo(Account account, Movement movement) {
+    private Mono<Movement> saveNewBalanceInfo(Account account, Movement movement) {
         return this.accountUseCase.updateAccountBalance(account)
                 .then(this.movementGateway.saveMovement(movement));
     }
-
 
     public Mono<Movement> getMovementById(Integer id) {
         return this.movementGateway.getMovementById(id)
                 .switchIfEmpty(Mono.error(new BussinesException(Message.MOVEMENT_NOT_FOUND)));
     }
 
+    public Mono<List<Report>> getReport(String idClient, String initialDate, String finalDate) {
+
+        return this.accountUseCase.getAccountsByClientId(Integer.parseInt(idClient))
+                .flatMap(account -> this.movementGateway.getMovementsByAccountIdAndDate(account.getAccountNumber(), LocalDate.parse(initialDate), LocalDate.parse(finalDate))
+                        .collectList()
+                        .map(movements -> Report.fromAccount(account, movements)))
+                .collectList();
+    }
 }

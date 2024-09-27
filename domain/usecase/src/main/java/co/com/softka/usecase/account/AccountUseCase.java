@@ -5,6 +5,7 @@ import co.com.softka.model.account.gateways.AccountGateway;
 import co.com.softka.model.exception.BussinesException;
 import co.com.softka.model.exception.Message;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -39,5 +40,9 @@ public class AccountUseCase {
     public Mono<Void> updateAccountBalance(Account account) {
         return this.accountGateway.saveAccount(account)
                 .then();
+    }
+
+    public Flux<Account> getAccountsByClientId(Integer clientId){
+        return this.accountGateway.getAccountsByClientId(clientId);
     }
 }

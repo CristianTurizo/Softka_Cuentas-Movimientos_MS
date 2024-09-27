@@ -6,11 +6,11 @@ import co.com.softka.model.exception.BussinesException;
 import co.com.softka.model.exception.Message;
 import co.com.softka.r2dbc.account.entity.AccountEntity;
 import co.com.softka.r2dbc.helper.ReactiveAdapterOperations;
-import co.com.softka.r2dbc.movements.MovementRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -50,5 +50,13 @@ implements AccountGateway
         return this.repository.deleteById(id)
                 .doFirst(() -> log.info("Deleting account with id: {}", id))
                 .doOnError(error -> log.error("Error deleting account with id: {} -> {}", id, error.getMessage()));
+    }
+
+    @Override
+    public Flux<Account> getAccountsByClientId(Integer clientId) {
+        return this.repository.findAccountsByIdCliente(clientId)
+                .map(this::toEntity)
+                .doFirst(() -> log.info("Finding account with clientId: {}", clientId))
+                .doOnError(error -> log.error("Error finding account with clientId: {} -> {}", clientId, error.getMessage()));
     }
 }

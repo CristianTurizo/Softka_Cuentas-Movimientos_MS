@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Repository
 public class MovementAdapter extends ReactiveAdapterOperations<Movement, MovementEntity, Integer, MovementRepository>
@@ -38,8 +40,8 @@ implements MovementGateway
     }
 
     @Override
-    public Flux<Movement> getMovementsByAccountId(Integer accountId) {
-        return this.repository.findMovementsByAccountNumber(accountId)
+    public Flux<Movement> getMovementsByAccountIdAndDate(Integer accountId, LocalDate initDate, LocalDate finalDate) {
+        return this.repository.findMovementsByAccountNumberAndDateBetween(accountId, initDate, finalDate)
                 .map(this::toEntity)
                 .doFirst(() -> log.info("Finding movement with accountId: {}", accountId))
                 .doOnError(error -> log.error("Error finding movement with accountId: {} -> {}", accountId, error.getMessage()));
