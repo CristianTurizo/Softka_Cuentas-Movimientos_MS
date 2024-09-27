@@ -66,8 +66,8 @@ public class AccountHandler {
     private <T> Mono<ServerResponse> buildResponse(T data, Message responseMessage, String error) {
         GenericResponse<T> response = new GenericResponse<>(
                 data,
-                error,
-                responseMessage.getMessage());
+                responseMessage.getMessage(),
+                error);
         return ServerResponse.ok().bodyValue(response);
     }
 }

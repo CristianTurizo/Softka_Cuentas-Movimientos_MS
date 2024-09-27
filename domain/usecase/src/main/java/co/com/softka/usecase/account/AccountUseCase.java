@@ -6,14 +6,13 @@ import co.com.softka.model.exception.BussinesException;
 import co.com.softka.model.exception.Message;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
-import reactor.function.TupleUtils;
 
 @RequiredArgsConstructor
 public class AccountUseCase {
 
     private final AccountGateway accountGateway;
 
-    public Mono<Account> createAccount(Account account){
+    public Mono<Account> createAccount(Account account) {
         account.setEstado(true);
         return this.accountGateway.saveAccount(account);
     }
@@ -35,5 +34,10 @@ public class AccountUseCase {
         return this.accountGateway.getAccountById(id)
                 .switchIfEmpty(Mono.error(new BussinesException(Message.ACCOUNT_NOT_FOUND)))
                 .then(this.accountGateway.deteleAccountById(id));
+    }
+
+    public Mono<Void> updateAccountBalance(Account account) {
+        return this.accountGateway.saveAccount(account)
+                .then();
     }
 }

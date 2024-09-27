@@ -14,13 +14,16 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class RouterRest {
 
-    private static final String PATH = "/cuentas";
+    private static final String ACCOUNT_PATH = "/cuentas";
+    private static final String MOVEMENT_PATH = "/movimientos";
 
     @Bean
-    public RouterFunction<ServerResponse> routerFunction(AccountHandler handler) {
-        return route(GET(PATH.concat("/{id}")), handler::getAccountById)
-                .andRoute(POST(PATH), handler::saveAccount)
-                .andRoute(PUT(PATH), handler::updateAccount)
-                .andRoute(DELETE(PATH.concat("/{id}")), handler::deleteAccountById);
+    public RouterFunction<ServerResponse> routerFunction(AccountHandler accountHandler, MovementHandler movementHandler) {
+        return route(GET(ACCOUNT_PATH.concat("/{id}")), accountHandler::getAccountById)
+                .andRoute(POST(ACCOUNT_PATH), accountHandler::saveAccount)
+                .andRoute(PUT(ACCOUNT_PATH), accountHandler::updateAccount)
+                .andRoute(DELETE(ACCOUNT_PATH.concat("/{id}")), accountHandler::deleteAccountById)
+                .andRoute(GET(MOVEMENT_PATH.concat("/{id}")), movementHandler::getMovementById)
+                .andRoute(POST(MOVEMENT_PATH), movementHandler::saveMovement);
     }
 }

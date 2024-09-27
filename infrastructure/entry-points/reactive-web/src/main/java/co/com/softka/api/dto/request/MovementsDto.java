@@ -12,5 +12,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class MovementsDto {
-    private Integer hola;
+    private Integer idMovement;
+    private String date;
+    private String type;
+    private Integer amount;
+    private Integer accountBalance;
+    private Integer accountNumber;
 }
