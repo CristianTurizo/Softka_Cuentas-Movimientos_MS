@@ -11,6 +11,7 @@ public enum Message {
     CLIENT_NOT_FOUND("Cliente no existe"),
     MOVEMENT_NOT_FOUND("Movimiento no existe"),
     INVALID_AMOUNT("El saldo debe ser mayor que 0"),
+    INVALID_ACCOUNT("Cuenta Invalida"),
     INSUFFICIENT_FUNDS("Fondos insuficientes"),
 
     SAVE_ACCOUNT_ERROR("Error saving account"),

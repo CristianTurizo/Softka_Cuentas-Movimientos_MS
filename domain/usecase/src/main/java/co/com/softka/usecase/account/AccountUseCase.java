@@ -20,7 +20,7 @@ public class AccountUseCase {
     public Mono<Void> updateAccount(Account account) {
         return this.accountGateway.getAccountById(account.getAccountNumber())
                 .switchIfEmpty(Mono.error(new BussinesException(Message.ACCOUNT_NOT_FOUND)))
-                .doOnNext(existedAccount -> account.setIdCliente(existedAccount.getIdCliente()))
+                .doOnNext(existedAccount -> existedAccount.setEstado(account.getEstado()))
                 .flatMap(this.accountGateway::saveAccount)
                 .then();
     }

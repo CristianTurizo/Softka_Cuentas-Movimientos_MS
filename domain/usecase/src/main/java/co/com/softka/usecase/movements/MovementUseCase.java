@@ -25,9 +25,16 @@ public class MovementUseCase {
 
         return this.accountUseCase.getAcccountById(movement.getAccountNumber())
                 .switchIfEmpty(Mono.error(new BussinesException(Message.ACCOUNT_NOT_FOUND)))
+                .flatMap(this::validateAccountStatus)
                 .flatMap(account -> this.updateBalance(account, movement))
-                .flatMap(TupleUtils.function((updatedAccount, updatedMovement) -> this.accountUseCase.updateAccountBalance(updatedAccount)
-                                .then(this.movementGateway.saveMovement(updatedMovement))));
+                .flatMap(TupleUtils.function(this::saveNewBalaceInfo));
+    }
+
+    private Mono<Account> validateAccountStatus(Account account){
+        if (account.getEstado().equals(Boolean.FALSE)){
+            return Mono.error(new BussinesException(Message.INVALID_ACCOUNT));
+        }
+        return Mono.just(account);
     }
 
     private Mono<Tuple2<Account, Movement>> updateBalance(Account account, Movement movement) {
@@ -50,6 +57,11 @@ public class MovementUseCase {
         movement.setAccountBalance(newBalance);
 
         return Mono.zip(Mono.just(account), Mono.just(movement));
+    }
+
+    private Mono<Movement> saveNewBalaceInfo(Account account, Movement movement) {
+        return this.accountUseCase.updateAccountBalance(account)
+                .then(this.movementGateway.saveMovement(movement));
     }
 
 
